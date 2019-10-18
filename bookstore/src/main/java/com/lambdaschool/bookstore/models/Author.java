@@ -2,7 +2,6 @@ package com.lambdaschool.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lambdaschool.bookstore.logging.Loggable;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,26 +12,29 @@ import java.util.List;
 
 @Loggable
 @Entity
-@Table(name = "authors")
+@Table(name = "author")
 public class Author extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long authorid;
 
-    private String lastname;
-    private String firstname;
+    private String lname;
+    private String fname;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany
+    @JoinTable(name = "authorsbooks",
+            joinColumns = {@JoinColumn(name = "authorid")},
+            inverseJoinColumns = {@JoinColumn(name = "bookid")})
     @JsonIgnoreProperties("authors")
     private List<Book> books = new ArrayList<>();
 
     public Author() {
     }
 
-    public Author(String lastname, String firstname) {
-        this.lastname = lastname;
-        this.firstname = firstname;
+    public Author(String lname, String fname) {
+        this.lname = lname;
+        this.fname = fname;
     }
 
     public long getAuthorid() {
@@ -44,19 +46,19 @@ public class Author extends Auditable {
     }
 
     public String getLastname() {
-        return lastname;
+        return lname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastname(String lname) {
+        this.lname = lname;
     }
 
     public String getFirstname() {
-        return firstname;
+        return fname;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstname(String fname) {
+        this.fname = fname;
     }
 
     public List<Book> getBooks() {

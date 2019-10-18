@@ -2,7 +2,6 @@ package com.lambdaschool.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lambdaschool.bookstore.logging.Loggable;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Loggable
 @Entity
-@Table(name = "books")
+@Table(name = "book")
 public class Book extends Auditable {
 
     @Id
@@ -18,7 +17,7 @@ public class Book extends Auditable {
     private long bookid;
 
     @Column(nullable = false)
-    private String booktitle;
+    private String title;
 
     @Column(nullable = false, unique  = true)
     private String ISBN;
@@ -39,8 +38,8 @@ public class Book extends Auditable {
 
     }
 
-    public Book(String booktitle, String ISBN, int copy, Section section) {
-        this.booktitle = booktitle;
+    public Book(String title, String ISBN, int copy, Section section) {
+        this.title = title;
         this.ISBN = ISBN;
         this.copy = copy;
         this.section = section;
@@ -55,11 +54,11 @@ public class Book extends Auditable {
     }
 
     public String getBooktitle() {
-        return booktitle;
+        return title;
     }
 
-    public void setBooktitle(String booktitle) {
-        this.booktitle = booktitle;
+    public void setBooktitle(String title) {
+        this.title = title;
     }
 
     public String getISBN() {

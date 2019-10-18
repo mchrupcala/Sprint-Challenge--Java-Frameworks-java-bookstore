@@ -14,26 +14,27 @@ import java.util.List;
 
 @Loggable
 @Entity
-@Table(name = "sections")
+@Table(name = "section")
 public class Section extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long sectionid;
 
     @Column(nullable = false, unique = true)
-    private String sectionname;
+    private String name;
 
 
-    @OneToMany(mappedBy = "sections",
+    @OneToMany(mappedBy = "section",
             cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("sections")
+    @JsonIgnoreProperties("section")
     private List<Book> books = new ArrayList<>();
 
     public Section() {
     }
 
-    public Section(String sectionname) {
-        this.sectionname = sectionname;
+    public Section(String name) {
+        this.name = name;
     }
 
     public long getSectionid() {
@@ -45,11 +46,11 @@ public class Section extends Auditable {
     }
 
     public String getSectionname() {
-        return sectionname;
+        return name;
     }
 
     public void setSectionname(String sectionname) {
-        this.sectionname = sectionname;
+        this.name = sectionname;
     }
 
     public List<Book> getBooks() {
