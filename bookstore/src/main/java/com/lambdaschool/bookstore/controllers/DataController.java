@@ -48,4 +48,16 @@ public class DataController {
 
     //DELETE
     //books/{id}
+
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<?> deleteBookById(HttpServletRequest request,
+                                            @PathVariable
+                                                    long id)
+    {
+//        logger.trace(request.getMethod()
+//                .toUpperCase() + " " + request.getRequestURI() + " accessed");
+
+        bookService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

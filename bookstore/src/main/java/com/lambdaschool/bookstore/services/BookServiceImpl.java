@@ -7,6 +7,7 @@ import com.lambdaschool.bookstore.repository.AuthorRepository;
 import com.lambdaschool.bookstore.repository.BookRepository;
 import com.lambdaschool.bookstore.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,13 @@ public class BookServiceImpl implements BookService{
     public ArrayList<Book> findAll() {
         ArrayList<Book> list = new ArrayList<>();
         bookrepos.findAll().iterator().forEachRemaining(list::add);
+        return list;
+    };
+
+    @Override
+    public ArrayList<Book> findAllPageable(Pageable pageable) {
+        ArrayList<Book> list = new ArrayList<>();
+        bookrepos.findAll(pageable).iterator().forEachRemaining(list::add);
         return list;
     };
 
@@ -87,6 +95,18 @@ public class BookServiceImpl implements BookService{
         {
             throw new ResourceFoundException("Book and Author Combination Already Exists");
         }
+    }
+
+    //works if there's no book/author combo
+    @Transactional
+    @Override
+    public void delete(long id)
+    {
+        bookrepos.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book id " + id + " not found!"));
+
+//        bookrepos.deleteBookAuthors(id, )
+        bookrepos.deleteById(id);
     }
 
 }
