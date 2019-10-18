@@ -1,14 +1,30 @@
 package com.lambdaschool.bookstore.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.lambdaschool.bookstore.models.Book;
+import com.lambdaschool.bookstore.services.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/data")
 public class DataController {
 
+    @Autowired
+    private BookService bookService;
+
     //POST
     //books/{id}
+    @PutMapping(value = "/books/{id}")
+    public ResponseEntity<?> updateBook(
+            @RequestBody
+            Book book,
+            @PathVariable
+                    long id) {
+        bookService.update(book, id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     //POST
     //books/{bookid}/authors/{authorid}
