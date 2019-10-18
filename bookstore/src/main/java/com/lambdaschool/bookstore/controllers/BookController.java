@@ -23,7 +23,7 @@ public class BookController {
     //books/books
     @GetMapping(value = "/books", produces = {"application/json"})
     public ResponseEntity<?> listAllBooksPageable(@PageableDefault(page=0, size=2) Pageable pageable) {
-        ArrayList<Book> myBooks = bookService.findAll();
+        ArrayList<Book> myBooks = bookService.findAllPageable(pageable);
         return new ResponseEntity<>(myBooks, HttpStatus.OK);
     }
 }
