@@ -1,6 +1,9 @@
 package com.lambdaschool.bookstore.services;
 
+import com.lambdaschool.bookstore.exceptions.ResourceFoundException;
+import com.lambdaschool.bookstore.exceptions.ResourceNotFoundException;
 import com.lambdaschool.bookstore.models.Book;
+import com.lambdaschool.bookstore.repository.AuthorRepository;
 import com.lambdaschool.bookstore.repository.BookRepository;
 import com.lambdaschool.bookstore.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ public class BookServiceImpl implements BookService{
 
     @Autowired
     private BookRepository bookrepos;
+
+    @Autowired
+    private AuthorRepository authorrepos;
 
     @Override
     public ArrayList<Book> findAll() {
@@ -59,6 +65,28 @@ public class BookServiceImpl implements BookService{
         newBook.setSection(newBook.getSection());
 
         return bookrepos.save(newBook);
+    }
+
+    @Transactional
+    @Override
+    public void addBookAuthor(long bookid,
+                            long authorid)
+    {
+        bookrepos.findById(bookid)
+                .orElseThrow(() -> new ResourceNotFoundException("Book id " + bookid + " not found!"));
+        authorrepos.findById(authorid)
+                .orElseThrow(() -> new ResourceNotFoundException("Author id " + authorid + " not found!"));
+
+        if (authorrepos.checkUserRolesCombo(bookid,
+                authorid)
+                .getCount() <= 0)
+        {
+            authorrepos.insertUserRoles(bookid,
+                    authorid);
+        } else
+        {
+            throw new ResourceFoundException("Book and Author Combination Already Exists");
+        }
     }
 
 }

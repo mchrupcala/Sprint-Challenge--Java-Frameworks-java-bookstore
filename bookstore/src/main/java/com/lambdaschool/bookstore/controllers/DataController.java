@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/data")
 public class DataController {
@@ -28,6 +30,21 @@ public class DataController {
 
     //POST
     //books/{bookid}/authors/{authorid}
+    @PostMapping("/books/{bookid}/authors/{authorid}")
+    public ResponseEntity<?> postBookAuthorsById(HttpServletRequest request,
+                                               @PathVariable
+                                                       long bookid,
+                                               @PathVariable
+                                                       long authorid)
+    {
+//        logger.trace(request.getMethod()
+//                .toUpperCase() + " " + request.getRequestURI() + " accessed");
+
+        bookService.addBookAuthor(bookid,
+                authorid);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     //DELETE
     //books/{id}

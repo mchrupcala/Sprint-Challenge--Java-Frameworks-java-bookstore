@@ -10,4 +10,6 @@ public interface BookService {
     Book update(Book book, long id);
 
     Book save(Book book);
+
+    void addBookAuthor(long bookid, long authorid);
 }
