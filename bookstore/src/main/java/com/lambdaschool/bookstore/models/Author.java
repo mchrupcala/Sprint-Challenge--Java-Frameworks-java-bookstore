@@ -23,7 +23,7 @@ public class Author extends Auditable {
     private String fname;
 
     @ManyToMany
-    @JoinTable(name = "authorsbooks",
+    @JoinTable(name = "wrote",
             joinColumns = {@JoinColumn(name = "authorid")},
             inverseJoinColumns = {@JoinColumn(name = "bookid")})
     @JsonIgnoreProperties("authors")
