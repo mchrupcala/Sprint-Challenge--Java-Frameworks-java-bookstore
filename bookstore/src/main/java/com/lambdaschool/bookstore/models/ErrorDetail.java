@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Loggable
 // adapted from https://tools.ietf.org/html/rfc7807
-public class ErrorDetail
+public class ErrorDetail extends Auditable
 {
     private String title;
     private int status;
