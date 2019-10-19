@@ -10,9 +10,9 @@ public interface BookService {
 
     ArrayList<Book> findAllPageable(Pageable pageable);
 
-    Book update(Book book, long id);
-
     Book save(Book book);
+
+    Book update(Book book, long bookid);
 
     void addBookAuthor(long bookid, long authorid);
 

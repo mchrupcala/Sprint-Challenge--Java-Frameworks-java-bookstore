@@ -31,7 +31,7 @@ public class Book extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "sectionid")
-    @JsonIgnoreProperties("books")
+    @JsonIgnoreProperties("sections")
     private Section section;
 
     public Book() {

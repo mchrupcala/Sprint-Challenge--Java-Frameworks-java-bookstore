@@ -16,15 +16,18 @@ public class DataController {
     @Autowired
     private BookService bookService;
 
+
+    //GET THIS ENDPOINT WORKING BY TOMORROW MORNING
     //POST
     //books/{id}
-    @PutMapping(value = "/books/{id}")
+    @PutMapping(value = "/books/{bookid}",
+                consumes = {"application/json"})
     public ResponseEntity<?> updateBook(
             @RequestBody
             Book book,
             @PathVariable
-                    long id) {
-        bookService.update(book, id);
+                    long bookid) {
+        book = bookService.update(book, bookid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

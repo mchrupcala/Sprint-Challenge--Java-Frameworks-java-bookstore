@@ -33,46 +33,52 @@ public class BookServiceImpl implements BookService{
     @Override
     public ArrayList<Book> findAllPageable(Pageable pageable) {
         ArrayList<Book> list = new ArrayList<>();
-        bookrepos.findAll(pageable).iterator().forEachRemaining(list::add);
+        bookrepos.findAll().iterator().forEachRemaining(list::add);
         return list;
     };
 
+
+    @Transactional
     @Override
-    public Book update(Book book, long id) {
-        Book currentBook = bookrepos.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
-//title, copy, isbn
-        if (book.getBooktitle() != null)
-        {
-            currentBook.setBooktitle(book.getBooktitle());
-        }
+    public Book save(Book book) {
+        Book newBook = new Book();
 
-        if (book.getCopy() != 0)
-        {
-            currentBook.setCopy(book.getCopy());
-        }
+        newBook.setISBN(book.getISBN());
+        newBook.setCopy(book.getCopy());
+        newBook.setBooktitle(book.getBooktitle());
+//        newBook.setAuthors(book.getAuthors());
+//        newBook.setSection(book.getSection());
 
-        if (book.getISBN() != null)
-        {
-            currentBook.setISBN(book.getISBN());
-        }
-
-        return bookrepos.save(currentBook);
+        return bookrepos.save(newBook);
     }
 
     @Transactional
     @Override
-    public Book save(Book book)
-    {
-        Book newBook = new Book();
+    public Book update(Book book, long bookid) {
 
-        newBook.setISBN(newBook.getISBN());
-        newBook.setCopy(newBook.getCopy());
-        newBook.setBooktitle(newBook.getBooktitle());
-        newBook.setAuthors(newBook.getAuthors());
-        newBook.setSection(newBook.getSection());
 
-        return bookrepos.save(newBook);
+        Book currentBook = bookrepos.findById(bookid);
+//                .orElseThrow(() -> new EntityNotFoundException(Long.toString(bookid)));
+
+        if (currentBook != null) {
+            if (book.getBooktitle() != null) {
+                currentBook.setBooktitle(book.getBooktitle());
+            }
+
+            if (book.getCopy() != 0) {
+                currentBook.setCopy(book.getCopy());
+            }
+
+            if (book.getISBN() != null) {
+                currentBook.setISBN(book.getISBN());
+            }
+
+            return bookrepos.save(currentBook);
+        } else {
+            {
+                throw new EntityNotFoundException("Book was not found.");
+            }
+        }
     }
 
     @Transactional
@@ -80,8 +86,8 @@ public class BookServiceImpl implements BookService{
     public void addBookAuthor(long bookid,
                             long authorid)
     {
-        bookrepos.findById(bookid)
-                .orElseThrow(() -> new ResourceNotFoundException("Book id " + bookid + " not found!"));
+        bookrepos.findById(bookid);
+//                .orElseThrow(() -> new ResourceNotFoundException("Book id " + bookid + " not found!"));
         authorrepos.findById(authorid)
                 .orElseThrow(() -> new ResourceNotFoundException("Author id " + authorid + " not found!"));
 
@@ -102,10 +108,10 @@ public class BookServiceImpl implements BookService{
     @Override
     public void delete(long id)
     {
-        bookrepos.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Book id " + id + " not found!"));
+        bookrepos.findById(id);
+//                .orElseThrow(() -> new ResourceNotFoundException("Book id " + id + " not found!"));
 
-//        bookrepos.deleteBookAuthors(id, )
+//        bookrepos.deleteBookAuthors(id, authorid )
         bookrepos.deleteById(id);
     }
 
